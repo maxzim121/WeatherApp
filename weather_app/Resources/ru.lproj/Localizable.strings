@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  weather_app
+
+  Created by Maksim Zimens on 25.03.2024.
+  
+*/
+"myLocation" = "Моё местоположение";
+"loading" = "Загрузка...";
+"weatherForTheWeek" = "Прогноз на неделю";
+"metersPerSecond" = "м/с";
+"kilometers" = "км";
+"locationAlertTitel" = "Нет доступа к локации";
+"locationAlertMessage" = "Чтобы пользоваться прогнозом погоды по вашему местоположению нужно разрешить доступ к Геологации";
+"locationAlertAction" = "Пользоваться без местоположения";
+"searchAlertTitel" = "Место не найдено";
+"searchAlertMessage" = "Введите корректное наименование";
+"searchAlertAction" = "Попробовать ещё раз";
+"inputLocation" = "Введите место";
+

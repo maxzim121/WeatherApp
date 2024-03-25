@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  weather_app
+
+  Created by Maksim Zimens on 25.03.2024.
+  
+*/
+"myLocation" = "My Location";
+"loading" = "Loading...";
+"weatherForTheWeek" = "Weather for the week";
+"metersPerSecond" = "m/s";
+"kilometers" = "km";
+"locationAlertTitel" = "Location unavailable";
+"locationAlertMessage" = "To use the weather forecast based on your location, you need to allow access to the Location";
+"locationAlertAction" = "Use without Location";
+"searchAlertTitel" = "Location is not found";
+"searchAlertMessage" = "Input the correct Location";
+"searchAlertAction" = "Try again";
+"inputLocation" = "Input Location";
