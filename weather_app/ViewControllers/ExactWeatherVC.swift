@@ -121,13 +121,13 @@ class ExactWeatherVC: UIViewController {
             paramsStack.addArrangedSubview($0)
         }
         NSLayoutConstraint.activate([
-            locationLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            locationLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             locationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            mainTempreture.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 10),
+            mainTempreture.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 20),
             mainTempreture.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            paramsStack.topAnchor.constraint(equalTo: mainTempreture.bottomAnchor, constant: 10),
+            paramsStack.topAnchor.constraint(equalTo: mainTempreture.bottomAnchor, constant: 20),
             paramsStack.heightAnchor.constraint(equalToConstant: 93),
             paramsStack.widthAnchor.constraint(equalToConstant: 298),
             paramsStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
