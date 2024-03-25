@@ -1,23 +1,17 @@
-import UIKit
+import Foundation
 import MapKit
 import CoreLocation
 
-enum LocalWeatherState {
-    case initial, loading, failed(Error), data
-}
-
-typealias LocalWeatherPresetnerCompletion = (Result<WeatherResponse, Error>) -> Void
+typealias WeatherPresetnerCompletion = (Result<WeatherResponse, Error>) -> Void
 
 protocol LocalWeatherProtocol: AnyObject {
-    func fetchAllWeather(location: CLLocationCoordinate2D)
     func getDailyWeather() -> [DailyWeather]
-    func getCurrentWeather() -> CurrentWeather?
-    func getCurrentLocation() -> String
-    func currentLocation()
     func viewController(view: LocalWeatherVCProtocol)
+    func exactModuleAssembly(locationName: String) -> UIViewController
+    func setCLManagerDelegate()
 }
 
-final class LocalWeatherPresenter {
+final class LocalWeatherPresenter: NSObject {
     
     private let networkClient = NetworkClient.shared
     let locationManager = CLLocationManager()
@@ -29,42 +23,10 @@ final class LocalWeatherPresenter {
             dailyWeather?.remove(at: 0)
         }
     }
-    private var state = LocalWeatherState.initial
     private var currentWeather: CurrentWeather?
     private var currentLocationName = ""
     private var dailyWeather: [DailyWeather]?
     weak var view: LocalWeatherVCProtocol?
-    
-    func locationFromCityName(cityName: String) {
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = cityName
-        let search = MKLocalSearch(request: request)
-        search.start() { response, error in
-            guard let response = response else {
-                print("Error: \(error?.localizedDescription ?? "Unknown error").")
-                return
-            }
-
-            for item in response.mapItems {
-                print(item.placemark.title)
-                print((item.placemark.coordinate.longitude * 100) / 100)
-                print(item.placemark.coordinate.latitude)
-            }
-        }
-    }
-    
-}
-
-extension LocalWeatherPresenter: LocalWeatherProtocol {
-    
-    func viewController(view: LocalWeatherVCProtocol) {
-        self.view = view
-    }
-    
-    func getCurrentLocation() -> String {
-        return currentLocationName
-    }
-    
     
     func fetchAllWeather(location: CLLocationCoordinate2D) {
         let lat = String(describing: location.latitude)
@@ -83,10 +45,8 @@ extension LocalWeatherPresenter: LocalWeatherProtocol {
     }
     
     func currentLocation() {
-        print("Hello")
         guard let location = locationManager.location else { return }
         let geocoder = CLGeocoder()
-        print("Hello2")
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             if let error = error {
                 print("Reverse geocoding error: \(error.localizedDescription)")
@@ -95,26 +55,48 @@ extension LocalWeatherPresenter: LocalWeatherProtocol {
             
             if let placemark = placemarks?.first {
                 if let place = placemark.locality {
-                    print(place)
-                    print(placemark)
                     self.currentLocationName = place
+                    self.view?.setCurrentLocationLabel(locationName: self.currentLocationName)
                 }
             }
         }
         fetchAllWeather(location: location.coordinate)
     }
+}
+
+extension LocalWeatherPresenter: LocalWeatherProtocol {
     
     func getDailyWeather() -> [DailyWeather] {
         guard let dailyWeather = dailyWeather else { return []}
         return dailyWeather
     }
     
-    
-    func getCurrentWeather() -> CurrentWeather? {
-        return currentWeather
+    func setCLManagerDelegate() {
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
     }
     
+    func exactModuleAssembly(locationName: String) -> UIViewController {
+        let exactModule = ExactWeatherModuleAssembly()
+        return exactModule.build(locationName: locationName)
+    }
     
+    func viewController(view: LocalWeatherVCProtocol) {
+        self.view = view
+    }
+}
+
+extension LocalWeatherPresenter: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            currentLocation()
+        case .denied, .restricted:
+            view?.showAlert()
+        default:
+            break
+        }
+    }
 }
 
 

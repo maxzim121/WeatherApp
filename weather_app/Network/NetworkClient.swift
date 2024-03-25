@@ -5,16 +5,15 @@ final class NetworkClient {
     private var weatherTask: URLSessionTask?
     static let shared = NetworkClient()
     
-    func fetchWeather(lat: String, lon: String, completion: @escaping LocalWeatherPresetnerCompletion) {
+    func fetchWeather(lat: String, lon: String, completion: @escaping WeatherPresetnerCompletion) {
         assert(Thread.isMainThread)
-        var request = weatherRequest(lat: lat, lon: lon)
+        let request = weatherRequest(lat: lat, lon: lon)
         weatherTask = urlSession.object(urlSession: urlSession, for: request) { [weak self] (result: Result<WeatherResponse, Error>) in
             DispatchQueue.main.async {
-                guard let self = self else {return}
+                guard self != nil else {return}
                 switch result {
                 case .success(let weather):
                     completion(.success(weather))
-                    print(weather)
                 case .failure(let error):
                     completion(.failure(error))
                     assertionFailure("\(error)")

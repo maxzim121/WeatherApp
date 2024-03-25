@@ -20,7 +20,7 @@ struct CurrentWeather: Codable {
     let dew_point: Double
     let uvi: Double
     let clouds: Int
-    let visibility: Int
+    let visibility: Int?
     let wind_speed: Double
     let wind_deg: Int
     let weather: [WeatherDescription]

@@ -1,6 +1,6 @@
 import UIKit
 
-final class LocalWeatherTableCell: UITableViewCell {
+final class WeatherTableCell: UITableViewCell {
     
     var dayLabel: UILabel = {
         var dayLabel = UILabel()
@@ -25,6 +25,8 @@ final class LocalWeatherTableCell: UITableViewCell {
     
     var nightTempreture: UILabel = {
         var nightTempreture = UILabel()
+        
+        nightTempreture.textColor = .lightGray
        return nightTempreture
     }()
     
@@ -38,24 +40,29 @@ final class LocalWeatherTableCell: UITableViewCell {
     }
     
     func setConstraints() {
-        [dayLabel, weatherImage, dayTempreture].forEach { element in
+        [dayLabel, weatherImage, dayTempreture, nightTempreture].forEach { element in
             contentView.addSubview(element)
             element.translatesAutoresizingMaskIntoConstraints = false
         }
         NSLayoutConstraint.activate([
             dayLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             dayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            dayLabel.widthAnchor.constraint(equalToConstant: 130),
+            dayLabel.widthAnchor.constraint(equalToConstant: 120),
             
             weatherImage.leadingAnchor.constraint(equalTo: dayLabel.trailingAnchor, constant: 30),
             weatherImage.widthAnchor.constraint(equalToConstant: 30),
             weatherImage.heightAnchor.constraint(equalToConstant: 30),
             weatherImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
+            nightTempreture.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            nightTempreture.widthAnchor.constraint(equalToConstant: 44),
+            nightTempreture.heightAnchor.constraint(equalToConstant: 44),
+            nightTempreture.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
+            
             dayTempreture.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             dayTempreture.widthAnchor.constraint(equalToConstant: 44),
             dayTempreture.heightAnchor.constraint(equalToConstant: 44),
-            dayTempreture.leadingAnchor.constraint(equalTo: weatherImage.trailingAnchor, constant: 30)
+            dayTempreture.leadingAnchor.constraint(equalTo: nightTempreture.leadingAnchor, constant: -65),
         ])
         
     }
