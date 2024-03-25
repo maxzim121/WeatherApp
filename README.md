@@ -2,9 +2,9 @@
 [ScreenCastRussian](https://disk.yandex.ru/i/3LNX9zoFURj-kg),
 [ScreenCastEnglish](https://disk.yandex.ru/i/SjjXaHIOBdQOsg)
 
-##### Layout type - by code
+Layout type - by code
 
-##### MVP architecture
+MVP architecture
 
 ## Application description
 
